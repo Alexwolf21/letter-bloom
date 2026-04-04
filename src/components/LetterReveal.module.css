@@ -1,0 +1,149 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(7, 10, 18, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 100;
+  padding: 20px;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  background-color: #fffaf0; /* Old paper color */
+  border-radius: 4px;
+  box-shadow: 
+    0 4px 60px rgba(255, 182, 193, 0.3),
+    0 0 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e8e1d5;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #8b7d6b;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.closeBtn:hover {
+  opacity: 1;
+}
+
+.paper {
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.header {
+  margin-bottom: 40px;
+  text-align: center;
+  border-bottom: 1px solid rgba(139, 125, 107, 0.1);
+  padding-bottom: 20px;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #8b7d6b;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.header h2 {
+  font-size: 2.2rem;
+  color: #5a4b41;
+}
+
+.content {
+  flex-grow: 1;
+  margin-bottom: 60px;
+}
+
+.text {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #4a3e36;
+  font-weight: 400;
+  white-space: pre-wrap;
+}
+
+.cursor {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.1em;
+  background-color: hsl(var(--accent-rose));
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(139, 125, 107, 0.1);
+  padding-top: 30px;
+}
+
+.footer p {
+  color: #8b7d6b;
+  margin-bottom: 5px;
+}
+
+.signature {
+  font-size: 1.5rem;
+  color: hsl(var(--accent-rose-dim));
+  font-style: italic;
+  font-family: inherit;
+}
+
+.sparkleContainer {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.sparkleIcon {
+  color: hsl(var(--accent-gold));
+  width: 40px;
+  height: 40px;
+}
+
+@media (max-width: 500px) {
+  .paper {
+    padding: 40px 25px;
+  }
+  .header h2 {
+    font-size: 1.8rem;
+  }
+  .text {
+    font-size: 1.1rem;
+  }
+}

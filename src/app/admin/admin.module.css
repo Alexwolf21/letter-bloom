@@ -1,0 +1,230 @@
+.adminOverlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: hsl(var(--background-deep));
+  z-index: 1000;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  background: hsl(var(--background-soft));
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.icon {
+  width: 48px; height: 48px;
+  color: hsl(var(--accent-gold));
+  margin-bottom: 20px;
+}
+
+.loginCard h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+.input {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, hsl(340, 80%, 60%), hsl(340, 80%, 45%));
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.button:hover {
+  transform: scale(1.02);
+}
+
+.adminContainer {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: hsl(var(--background-deep));
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  color: hsl(var(--accent-gold));
+}
+
+.header p {
+  color: hsl(var(--text-secondary));
+  opacity: 0.8;
+}
+
+.main {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputGroup label {
+  font-size: 1rem;
+  color: hsl(var(--text-secondary));
+  font-weight: 500;
+}
+
+.inputGroup textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 15px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: hsl(var(--background-soft));
+  color: white;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.primaryButton, .secondaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, hsl(340, 80%, 65%), hsl(340, 80%, 50%));
+  color: white;
+  border: none;
+}
+
+.secondaryButton {
+  background: transparent;
+  color: hsl(var(--text-secondary));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.primaryButton:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+}
+
+.spin {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.buttonStack {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.buttonGroup > button {
+  flex: 1;
+}
+
+.scheduleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: hsl(var(--text-secondary));
+  border: 1px solid hsl(var(--accent-gold));
+  transition: all 0.2s;
+}
+
+.scheduleButton:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+}
+
+.letterPreview {
+  padding: 40px;
+  background: #fffaf0;
+  border-radius: 8px;
+  color: #4a3e36;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.success {
+  text-align: center;
+  padding: 60px 40px;
+  background: hsl(var(--background-soft));
+  border-radius: 24px;
+}
+
+.successIcon {
+  width: 80px; height: 80px;
+  color: #4ade80;
+  margin-bottom: 24px;
+}
+
+.success h2 {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.success p {
+  color: hsl(var(--text-secondary));
+  margin-bottom: 40px;
+}
