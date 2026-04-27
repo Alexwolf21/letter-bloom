@@ -4,19 +4,28 @@ import React, { useState } from "react";
 import MagicBackground from "@/components/MagicBackground";
 import MagicSparkles from "@/components/MagicSparkles";
 import Scene from "@/components/Scene";
+import LetterArchive from "@/components/LetterArchive";
 import styles from "@/app/page.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 import LetterReveal from "@/components/LetterReveal";
-import { Lock, Heart } from "lucide-react";
+import { Lock, Heart, History } from "lucide-react";
 import { verifyGirlfriendPasscode } from "@/app/actions";
+
+interface Letter {
+  id: string;
+  content: string;
+  scheduled_for: string;
+}
 
 interface ClientHomeProps {
   initialLetter: string | null;
+  pastLetters: Letter[];
 }
 
-export default function ClientHome({ initialLetter }: ClientHomeProps) {
+export default function ClientHome({ initialLetter, pastLetters }: ClientHomeProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [showLetter, setShowLetter] = useState(false);
+  const [showArchive, setShowArchive] = useState(false);
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(initialLetter);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,11 +42,14 @@ export default function ClientHome({ initialLetter }: ClientHomeProps) {
     setLoading(false);
   };
 
+  const handleSelectArchive = (letter: Letter) => {
+    setSelectedLetter(letter.content);
+    setShowArchive(false);
+    setIsOpen(true);
+  };
+
   const handleOpen = () => {
     setIsOpen(true);
-    setTimeout(() => {
-      setShowLetter(true);
-    }, 1200);
   };
 
   const defaultContent = "My love, today is a beautiful day simply because you are in it. I hope this little bloom makes you smile as much as you make me smile every single day. I love you.";
@@ -52,19 +64,31 @@ export default function ClientHome({ initialLetter }: ClientHomeProps) {
           <Scene isOpen={isOpen} onOpen={handleOpen} />
         </div>
 
-        <AnimatePresence>
-          {showLetter && (
-            <LetterReveal 
-              content={initialLetter || defaultContent}
-              onClose={() => {
-                setShowLetter(false);
-                setIsOpen(false);
-              }} 
-            />
+        <div className={styles.uiOverlay}>
+          {!isOpen && isAuthorized && (
+            <button 
+              onClick={() => setShowArchive(true)} 
+              className={styles.archiveButton}
+            >
+              <History size={16} />
+              View Past Memories
+            </button>
           )}
-        </AnimatePresence>
 
-        {!isOpen && (
+          <AnimatePresence>
+            {isOpen && (
+              <LetterReveal 
+                content={selectedLetter || defaultContent}
+                onClose={() => {
+                  setIsOpen(false);
+                  setSelectedLetter(initialLetter);
+                }} 
+              />
+            )}
+          </AnimatePresence>
+        </div>
+
+        {!isOpen && isAuthorized && (
           <motion.header 
             className={styles.header}
             initial={{ opacity: 0, scale: 0.9 }}

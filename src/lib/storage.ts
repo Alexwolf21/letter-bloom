@@ -55,3 +55,37 @@ export async function getTodayLetter() {
 
   return data || null;
 }
+
+export async function getPastLetters() {
+  const now = new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from("letters")
+    .select("*")
+    .lt("scheduled_for", now)
+    .order("scheduled_for", { ascending: false });
+
+  if (error) {
+    console.error("Supabase Archive Error:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export async function deleteOldLetters(days: number = 30) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days);
+  
+  const { count, error } = await supabase
+    .from("letters")
+    .delete({ count: "exact" })
+    .lt("scheduled_for", cutoff.toISOString());
+
+  if (error) {
+    console.error("Housekeeping Error:", error);
+    throw error;
+  }
+
+  return count;
+}
