@@ -8,7 +8,8 @@ import LetterArchive from "@/components/LetterArchive";
 import styles from "@/app/page.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 import LetterReveal from "@/components/LetterReveal";
-import { Lock, Heart, History } from "lucide-react";
+import DateScheduler from "@/components/DateScheduler";
+import { Lock, Heart, History, Calendar as CalendarIcon } from "lucide-react";
 import { verifyGirlfriendPasscode } from "@/app/actions";
 import { toggleFavorite } from "@/lib/storage";
 interface Letter {
@@ -27,6 +28,7 @@ interface ClientHomeProps {
 export default function ClientHome({ initialLetter, pastLetters }: ClientHomeProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const [showScheduler, setShowScheduler] = useState(false);
   const [currentLetter, setCurrentLetter] = useState<Letter | null>(initialLetter);
   const [allLetters, setAllLetters] = useState<Letter[]>(pastLetters);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -89,13 +91,22 @@ export default function ClientHome({ initialLetter, pastLetters }: ClientHomePro
 
         <div className={styles.uiOverlay}>
           {!isOpen && isAuthorized && (
-            <button 
-              onClick={() => setShowArchive(true)} 
-              className={styles.archiveButton}
-            >
-              <History size={16} />
-              View Past Memories
-            </button>
+            <div className={styles.buttonGroupTop}>
+              <button 
+                onClick={() => setShowArchive(true)} 
+                className={styles.archiveButton}
+              >
+                <History size={16} />
+                View Past Memories
+              </button>
+              <button 
+                onClick={() => setShowScheduler(true)} 
+                className={styles.archiveButton}
+              >
+                <CalendarIcon size={16} />
+                Plan Our Date
+              </button>
+            </div>
           )}
 
           <AnimatePresence>
@@ -169,6 +180,13 @@ export default function ClientHome({ initialLetter, pastLetters }: ClientHomePro
             isOpen={showArchive} 
             onClose={() => setShowArchive(false)} 
             onSelect={handleSelectArchive}
+          />
+        )}
+        {showScheduler && (
+          <DateScheduler 
+            userRole="gf"
+            isOpen={showScheduler}
+            onClose={() => setShowScheduler(false)}
           />
         )}
       </AnimatePresence>

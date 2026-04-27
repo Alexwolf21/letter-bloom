@@ -109,3 +109,53 @@ export async function toggleFavorite(id: string, isFavorite: boolean) {
 
   return data;
 }
+
+export async function getDates() {
+  const { data, error } = await supabase
+    .from("dates")
+    .select("*")
+    .order("scheduled_at", { ascending: true });
+
+  if (error) {
+    console.error("Supabase Dates Error:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export async function createDate(scheduledAt: string, description: string, createdBy: 'bf' | 'gf') {
+  const { data, error } = await supabase
+    .from("dates")
+    .insert([{ 
+      scheduled_at: scheduledAt, 
+      description, 
+      created_by: createdBy,
+      status: 'pending'
+    }])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Supabase Create Date Error:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function updateDateStatus(id: string, status: 'approved' | 'rejected', reason?: string) {
+  const { data, error } = await supabase
+    .from("dates")
+    .update({ status, rejection_reason: reason })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Supabase Update Date Error:", error);
+    throw error;
+  }
+
+  return data;
+}

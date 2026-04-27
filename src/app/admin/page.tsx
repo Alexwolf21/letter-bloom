@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import styles from "./admin.module.css";
 import { motion, AnimatePresence } from "framer-motion";
-import { PenLine, Send, Lock, Loader2, Sparkles, CheckCircle } from "lucide-react";
+import { PenLine, Send, Lock, Loader2, Sparkles, CheckCircle, Calendar as CalendarIcon } from "lucide-react";
 import { verifyAdminPasscode } from "@/app/actions";
+import DateScheduler from "@/components/DateScheduler";
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
@@ -19,6 +20,7 @@ export default function AdminPage() {
   const [mood, setMood] = useState("peaceful");
   const [tone, setTone] = useState("poetic");
   const [generatedLetter, setGeneratedLetter] = useState("");
+  const [showScheduler, setShowScheduler] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,7 +111,16 @@ export default function AdminPage() {
   return (
     <div className={styles.adminContainer}>
       <header className={styles.header}>
-        <h1 className="playfair">Admin Dashboard</h1>
+        <div className={styles.headerTop}>
+          <h1 className="playfair">Admin Dashboard</h1>
+          <button 
+            onClick={() => setShowScheduler(true)} 
+            className={styles.schedulerToggle}
+          >
+            <CalendarIcon size={20} />
+            Plan Our Date
+          </button>
+        </div>
         <p>Crafting tomorrow&apos;s bloom...</p>
       </header>
 
@@ -223,6 +234,12 @@ export default function AdminPage() {
           )}
         </AnimatePresence>
       </main>
+
+      <DateScheduler 
+        userRole="bf"
+        isOpen={showScheduler}
+        onClose={() => setShowScheduler(false)}
+      />
     </div>
   );
 }
