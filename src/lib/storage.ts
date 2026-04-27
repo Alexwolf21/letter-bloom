@@ -62,7 +62,7 @@ export async function getPastLetters() {
   const { data, error } = await supabase
     .from("letters")
     .select("*")
-    .lt("scheduled_for", now)
+    .lte("scheduled_for", now)
     .order("scheduled_for", { ascending: false });
 
   if (error) {
