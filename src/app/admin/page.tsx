@@ -58,7 +58,7 @@ export default function AdminPage() {
     }
   };
 
-  const handlePublish = async (immediate: boolean = false) => {
+  const handlePublish = async () => {
     setLoading(true);
     try {
       const response = await fetch("/api/save", {
@@ -66,7 +66,7 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           content: generatedLetter,
-          immediate: immediate,
+          immediate: true,
           mood: mood
         }),
       });
@@ -192,13 +192,9 @@ export default function AdminPage() {
                 <p>{generatedLetter}</p>
               </div>
               <div className={styles.buttonStack}>
-                <button onClick={() => setStep(2)} className={styles.secondaryButton}>Edit Seeds</button>
                 <div className={styles.buttonGroup}>
-                  <button onClick={() => handlePublish(false)} disabled={loading} className={styles.scheduleButton}>
-                    {loading ? <Loader2 className={styles.spin} /> : <CheckCircle size={20} />}
-                    Schedule for Tomorrow
-                  </button>
-                  <button onClick={() => handlePublish(true)} disabled={loading} className={styles.primaryButton}>
+                  <button onClick={() => setStep(2)} className={styles.secondaryButton}>Edit Seeds</button>
+                  <button onClick={handlePublish} disabled={loading} className={styles.primaryButton}>
                     {loading ? <Loader2 className={styles.spin} /> : <Send size={20} />}
                     Bloom Immediately
                   </button>
@@ -215,8 +211,8 @@ export default function AdminPage() {
               animate={{ opacity: 1, scale: 1 }}
             >
               <CheckCircle className={styles.successIcon} />
-              <h2 className="playfair">Letter Scheduled!</h2>
-              <p>Your bloom will be waiting for her tomorrow morning.</p>
+              <h2 className="playfair">Letter Bloomed!</h2>
+              <p>Your letter is now live for her to open.</p>
               <button onClick={() => {
                 setStep(2);
                 setFeelings("");
