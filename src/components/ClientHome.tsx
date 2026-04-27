@@ -135,6 +135,17 @@ export default function ClientHome({ initialLetter, pastLetters }: ClientHomePro
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {showArchive && (
+          <LetterArchive 
+            letters={pastLetters} 
+            isOpen={showArchive} 
+            onClose={() => setShowArchive(false)} 
+            onSelect={handleSelectArchive}
+          />
+        )}
+      </AnimatePresence>
     </main>
   );
 }
