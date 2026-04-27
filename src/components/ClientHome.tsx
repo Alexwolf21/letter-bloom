@@ -16,6 +16,7 @@ interface Letter {
   content: string;
   scheduled_for: string;
   is_favorite: boolean;
+  mood: string;
 }
 
 interface ClientHomeProps {
