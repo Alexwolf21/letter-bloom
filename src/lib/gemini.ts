@@ -7,6 +7,7 @@ export async function generateLoveLetter(input: {
   feelings: string;
   memories: string;
   notes: string;
+  tone?: string;
 }) {
   if (!apiKey) {
     throw new Error("Gemini API Key is not configured.");
@@ -21,7 +22,13 @@ export async function generateLoveLetter(input: {
     - Additional Notes: ${input.notes}
     
     Write a beautiful, medium-length love letter (about 100-150 words). 
-    The tone should be sincere, warm, and dreamy. 
+    
+    The tone should be: ${input.tone || 'romantic and sincere'}.
+    
+    ${input.tone === 'shakespearean' ? 'Use old English style like thee/thou and poetic metaphors.' : ''}
+    ${input.tone === 'playful' ? 'Keep it lighthearted, cute, and use some playful teasing.' : ''}
+    ${input.tone === 'modern' ? 'Use contemporary, minimalist, and direct but deeply emotional language.' : ''}
+    
     Use elegant but natural language. 
     Do not use generic placeholders. 
     Focus on making her feel special and loved.

@@ -7,9 +7,11 @@ export interface Letter {
   content: string;
   scheduled_for: string; // ISO String
   created_at: string;
+  is_favorite: boolean;
+  mood: string;
 }
 
-export async function saveLetter(content: string, scheduledFor?: Date) {
+export async function saveLetter(content: string, scheduledFor?: Date, mood: string = 'peaceful') {
   // Default to tomorrow 8 AM if no date is provided
   const targetDate = scheduledFor || (() => {
     const d = new Date();
@@ -24,6 +26,7 @@ export async function saveLetter(content: string, scheduledFor?: Date) {
       {
         content: content,
         scheduled_for: targetDate.toISOString(),
+        mood: mood,
       }
     ])
     .select();
@@ -80,7 +83,8 @@ export async function deleteOldLetters(days: number = 30) {
   const { count, error } = await supabase
     .from("letters")
     .delete({ count: "exact" })
-    .lt("scheduled_for", cutoff.toISOString());
+    .lt("scheduled_for", cutoff.toISOString())
+    .eq("is_favorite", false); // Only delete non-favorited letters
 
   if (error) {
     console.error("Housekeeping Error:", error);
@@ -88,4 +92,20 @@ export async function deleteOldLetters(days: number = 30) {
   }
 
   return count;
+}
+
+export async function toggleFavorite(id: string, isFavorite: boolean) {
+  const { data, error } = await supabase
+    .from("letters")
+    .update({ is_favorite: isFavorite })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Toggle Favorite Error:", error);
+    throw error;
+  }
+
+  return data;
 }

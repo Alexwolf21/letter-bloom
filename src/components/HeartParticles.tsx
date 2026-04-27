@@ -2,10 +2,24 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, Star, Sparkles } from "lucide-react";
 
-const HeartParticles = () => {
+interface HeartParticlesProps {
+  mood?: string;
+}
+
+const HeartParticles = ({ mood = 'peaceful' }: HeartParticlesProps) => {
   const [particles, setParticles] = useState<{ id: number; x: number; y: number; size: number; duration: number; delay: number }[]>([]);
+
+  const moodConfig: Record<string, { color: string, Icon: any }> = {
+    peaceful: { color: "hsla(205, 100%, 65%, 0.8)", Icon: Star },
+    passionate: { color: "hsla(340, 100%, 50%, 0.8)", Icon: Heart },
+    nostalgic: { color: "hsla(45, 100%, 50%, 0.8)", Icon: Sparkles },
+    excited: { color: "hsla(300, 100%, 65%, 0.8)", Icon: Heart },
+  };
+
+  const currentConfig = moodConfig[mood] || moodConfig.peaceful;
+  const MoodIcon = currentConfig.Icon;
 
   useEffect(() => {
     const newParticles = Array.from({ length: 40 }).map((_, i) => ({
@@ -37,9 +51,9 @@ const HeartParticles = () => {
             delay: p.delay,
             ease: "easeOut",
           }}
-          style={{ position: "absolute", color: "hsla(340, 80%, 65%, 0.8)" }}
+          style={{ position: "absolute", color: currentConfig.color }}
         >
-          <Heart size={p.size} fill="currentColor" />
+          <MoodIcon size={p.size} fill={MoodIcon === Heart || MoodIcon === Star ? "currentColor" : "none"} />
         </motion.div>
       ))}
     </div>

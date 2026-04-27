@@ -2,13 +2,14 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Calendar, History } from "lucide-react";
+import { Calendar, History, Heart } from "lucide-react";
 import styles from "@/app/page.module.css";
 
 interface Letter {
   id: string;
   content: string;
   scheduled_for: string;
+  is_favorite: boolean;
 }
 
 interface LetterArchiveProps {
@@ -57,6 +58,9 @@ const LetterArchive = ({ letters, onSelect, isOpen, onClose }: LetterArchiveProp
                 >
                   <Calendar size={18} />
                   <span>{date}</span>
+                  {letter.is_favorite && (
+                    <Heart size={14} fill="currentColor" style={{ marginLeft: "auto", color: "hsl(var(--accent-rose))" }} />
+                  )}
                 </motion.button>
               );
             })

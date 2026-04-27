@@ -8,9 +8,10 @@ import FloatingEnvelope from "./FloatingEnvelope";
 interface SceneProps {
   isOpen: boolean;
   onOpen: () => void;
+  mood?: string;
 }
 
-const Scene = ({ isOpen, onOpen }: SceneProps) => {
+const Scene = ({ isOpen, onOpen, mood }: SceneProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Scene = ({ isOpen, onOpen }: SceneProps) => {
 
       <Suspense fallback={null}>
         <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-          <FloatingEnvelope isOpen={isOpen} onOpen={onOpen} />
+          <FloatingEnvelope isOpen={isOpen} onOpen={onOpen} mood={mood} />
         </Float>
         <Environment preset="night" />
       </Suspense>

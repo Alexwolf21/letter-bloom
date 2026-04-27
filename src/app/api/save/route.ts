@@ -3,7 +3,7 @@ import { saveLetter } from "@/lib/storage";
 
 export async function POST(req: NextRequest) {
   try {
-    const { content, immediate } = await req.json();
+    const { content, immediate, mood } = await req.json();
 
     if (!content) {
       return NextResponse.json(
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     }
 
     const scheduledDate = immediate ? new Date() : undefined;
-    const saved = await saveLetter(content, scheduledDate);
+    const saved = await saveLetter(content, scheduledDate, mood);
 
     return NextResponse.json({ success: true, letter: saved });
   } catch (error: any) {

@@ -10,22 +10,24 @@ import { AnimatePresence, motion } from "framer-motion";
 import LetterReveal from "@/components/LetterReveal";
 import { Lock, Heart, History } from "lucide-react";
 import { verifyGirlfriendPasscode } from "@/app/actions";
-
+import { toggleFavorite } from "@/lib/storage";
 interface Letter {
   id: string;
   content: string;
   scheduled_for: string;
+  is_favorite: boolean;
 }
 
 interface ClientHomeProps {
-  initialLetter: string | null;
+  initialLetter: Letter | null;
   pastLetters: Letter[];
 }
 
 export default function ClientHome({ initialLetter, pastLetters }: ClientHomeProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
-  const [selectedLetter, setSelectedLetter] = useState<string | null>(initialLetter);
+  const [currentLetter, setCurrentLetter] = useState<Letter | null>(initialLetter);
+  const [allLetters, setAllLetters] = useState<Letter[]>(pastLetters);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,8 +44,28 @@ export default function ClientHome({ initialLetter, pastLetters }: ClientHomePro
     setLoading(false);
   };
 
+  const handleToggleFavorite = async () => {
+    if (!currentLetter) return;
+
+    const newFavoriteStatus = !currentLetter.is_favorite;
+    
+    // Optimistic Update
+    const updatedLetter = { ...currentLetter, is_favorite: newFavoriteStatus };
+    setCurrentLetter(updatedLetter);
+    setAllLetters(prev => prev.map(l => l.id === updatedLetter.id ? updatedLetter : l));
+
+    try {
+      await toggleFavorite(currentLetter.id, newFavoriteStatus);
+    } catch (error) {
+      // Revert if error
+      setCurrentLetter(currentLetter);
+      setAllLetters(pastLetters);
+      alert("Failed to save favorite. Please try again.");
+    }
+  };
+
   const handleSelectArchive = (letter: Letter) => {
-    setSelectedLetter(letter.content);
+    setCurrentLetter(letter);
     setShowArchive(false);
     setIsOpen(true);
   };
@@ -61,7 +83,7 @@ export default function ClientHome({ initialLetter, pastLetters }: ClientHomePro
       
       <div className={styles.container}>
         <div className={styles.sceneWrapper}>
-          <Scene isOpen={isOpen} onOpen={handleOpen} />
+          <Scene isOpen={isOpen} onOpen={handleOpen} mood={currentLetter?.mood} />
         </div>
 
         <div className={styles.uiOverlay}>
@@ -78,10 +100,13 @@ export default function ClientHome({ initialLetter, pastLetters }: ClientHomePro
           <AnimatePresence>
             {isOpen && (
               <LetterReveal 
-                content={selectedLetter || defaultContent}
+                content={currentLetter?.content || defaultContent}
+                isFavorite={currentLetter?.is_favorite || false}
+                mood={currentLetter?.mood}
+                onToggleFavorite={handleToggleFavorite}
                 onClose={() => {
                   setIsOpen(false);
-                  setSelectedLetter(initialLetter);
+                  setCurrentLetter(initialLetter);
                 }} 
               />
             )}
@@ -139,7 +164,7 @@ export default function ClientHome({ initialLetter, pastLetters }: ClientHomePro
       <AnimatePresence>
         {showArchive && (
           <LetterArchive 
-            letters={pastLetters} 
+            letters={allLetters} 
             isOpen={showArchive} 
             onClose={() => setShowArchive(false)} 
             onSelect={handleSelectArchive}

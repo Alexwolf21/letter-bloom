@@ -3,7 +3,7 @@ import { generateLoveLetter } from "@/lib/gemini";
 
 export async function POST(req: NextRequest) {
   try {
-    const { feelings, memories, notes } = await req.json();
+    const { feelings, memories, notes, tone } = await req.json();
 
     if (!feelings || !memories) {
       return NextResponse.json(
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const letter = await generateLoveLetter({ feelings, memories, notes });
+    const letter = await generateLoveLetter({ feelings, memories, notes, tone });
 
     return NextResponse.json({ letter });
   } catch (error: any) {

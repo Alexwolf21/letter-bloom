@@ -8,17 +8,28 @@ import * as THREE from "three";
 interface FloatingEnvelopeProps {
   isOpen: boolean;
   onOpen: () => void;
+  mood?: string;
 }
 
-const FloatingEnvelope = ({ isOpen, onOpen }: FloatingEnvelopeProps) => {
+const FloatingEnvelope = ({ isOpen, onOpen, mood = 'peaceful' }: FloatingEnvelopeProps) => {
   const [hovered, setHovered] = useState(false);
   const flapRef = useRef<THREE.Group>(null);
   useCursor(hovered && !isOpen);
 
+  // Mood Colors Configuration
+  const moodColors: Record<string, { light: string, pulse: string }> = {
+    peaceful: { light: "#4eb4ff", pulse: "#87ceeb" }, // Soft Blue
+    passionate: { light: "#ff3e6d", pulse: "#ff1493" }, // Deep Red/Pink
+    nostalgic: { light: "#ffcc33", pulse: "#ffd700" }, // Warm Gold
+    excited: { light: "#ff69b4", pulse: "#ff00ff" }, // Bright Pink/Magenta
+  };
+
+  const currentColors = moodColors[mood] || moodColors.peaceful;
+
   // Colors
   const envelopeColor = "#fff5f5";
   const innerColor = "#ffe4e1";
-  const sealColor = "#d4af37"; // Gold
+  const sealColor = mood === 'passionate' ? "#b22222" : "#d4af37";
 
   // Use Frame for smooth animation instead of 3rd party libraries to avoid version conflicts
   useFrame((state, delta) => {
@@ -106,7 +117,7 @@ const FloatingEnvelope = ({ isOpen, onOpen }: FloatingEnvelopeProps) => {
 
       {/* Inner Glow */}
       {isOpen && (
-        <pointLight position={[0, 0, 0.2]} intensity={2} color="#ffd700" distance={2} />
+        <pointLight position={[0, 0, 0.2]} intensity={3} color={currentColors.light} distance={3} />
       )}
 
       {/* Outer Pulse Glow (Visible when hovered or open) */}
@@ -114,9 +125,9 @@ const FloatingEnvelope = ({ isOpen, onOpen }: FloatingEnvelopeProps) => {
         <mesh position={[0, 0, -0.05]}>
           <planeGeometry args={[4.4, 3.2]} />
           <meshBasicMaterial 
-            color={isOpen ? "#ffd700" : "#ffb6c1"} 
+            color={isOpen ? currentColors.pulse : "#ffb6c1"} 
             transparent 
-            opacity={0.15} 
+            opacity={0.2} 
           />
         </mesh>
       )}

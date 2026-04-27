@@ -12,7 +12,7 @@ export default async function Page() {
   
   return (
     <ClientHome 
-      initialLetter={letter ? letter.content : null} 
+      initialLetter={letter} 
       pastLetters={pastLetters}
     />
   );

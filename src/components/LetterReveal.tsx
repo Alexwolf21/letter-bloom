@@ -2,16 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles } from "lucide-react";
+import { X, Sparkles, Heart } from "lucide-react";
 import styles from "./LetterReveal.module.css";
 import HeartParticles from "./HeartParticles";
 
 interface LetterRevealProps {
   content: string;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
   onClose: () => void;
+  mood?: string;
 }
 
-const LetterReveal = ({ content, onClose }: LetterRevealProps) => {
+const LetterReveal = ({ content, isFavorite, onToggleFavorite, onClose, mood }: LetterRevealProps) => {
   const [displayText, setDisplayText] = useState("");
   const fullText = content || "My love, I couldn't wait to tell you how much you mean to me. Every day with you is a gift...";
   
@@ -29,7 +32,7 @@ const LetterReveal = ({ content, onClose }: LetterRevealProps) => {
 
   return (
     <div className={styles.overlay}>
-      <HeartParticles />
+      <HeartParticles mood={mood} />
       
       <motion.div 
         className={styles.card}
@@ -45,7 +48,16 @@ const LetterReveal = ({ content, onClose }: LetterRevealProps) => {
         <div className={styles.paper}>
           <div className={styles.header}>
             <span className={styles.date}>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-            <h2 className="playfair">Today&apos;s Letter</h2>
+            <div className={styles.headerActions}>
+              <button 
+                className={`${styles.favoriteBtn} ${isFavorite ? styles.isFavorite : ""}`} 
+                onClick={onToggleFavorite}
+                title={isFavorite ? "Remove from Favorites" : "Save as Favorite"}
+              >
+                <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
+              </button>
+              <h2 className="playfair">Love Letter</h2>
+            </div>
           </div>
 
           <div className={styles.content}>

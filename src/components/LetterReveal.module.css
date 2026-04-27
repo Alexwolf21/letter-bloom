@@ -60,6 +60,39 @@
   text-align: center;
   border-bottom: 1px solid rgba(139, 125, 107, 0.1);
   padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+
+.favoriteBtn {
+  background: none;
+  border: none;
+  color: rgba(139, 125, 107, 0.2);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favoriteBtn:hover {
+  background: rgba(226, 47, 95, 0.05);
+  color: hsl(var(--accent-rose));
+  transform: scale(1.1);
+}
+
+.isFavorite {
+  color: hsl(var(--accent-rose));
+  filter: drop-shadow(0 0 5px rgba(226, 47, 95, 0.3));
 }
 
 .date {

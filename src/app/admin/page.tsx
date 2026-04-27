@@ -16,6 +16,8 @@ export default function AdminPage() {
   const [feelings, setFeelings] = useState("");
   const [memories, setMemories] = useState("");
   const [notes, setNotes] = useState("");
+  const [mood, setMood] = useState("peaceful");
+  const [tone, setTone] = useState("poetic");
   const [generatedLetter, setGeneratedLetter] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -43,7 +45,7 @@ export default function AdminPage() {
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ feelings, memories, notes }),
+        body: JSON.stringify({ feelings, memories, notes, tone }),
       });
       const data = await response.json();
       if (data.error) throw new Error(data.error);
@@ -64,7 +66,8 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           content: generatedLetter,
-          immediate: immediate
+          immediate: immediate,
+          mood: mood
         }),
       });
       const data = await response.json();
@@ -147,6 +150,28 @@ export default function AdminPage() {
                   onChange={(e) => setNotes(e.target.value)}
                 />
               </div>
+
+              <div className={styles.selectorRow}>
+                <div className={styles.inputGroup}>
+                  <label>Writing Style (AI Tone)</label>
+                  <select value={tone} onChange={(e) => setTone(e.target.value)} className={styles.select}>
+                    <option value="poetic">Romantic & Poetic</option>
+                    <option value="playful">Playful & Cute</option>
+                    <option value="modern">Modern & Direct</option>
+                    <option value="shakespearean">Shakespearean</option>
+                  </select>
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Atmosphere (Mood)</label>
+                  <select value={mood} onChange={(e) => setMood(e.target.value)} className={styles.select}>
+                    <option value="peaceful">Peaceful (Soft Blue)</option>
+                    <option value="passionate">Passionate (Deep Red)</option>
+                    <option value="nostalgic">Nostalgic (Warm Gold)</option>
+                    <option value="excited">Excited (Bright Pink)</option>
+                  </select>
+                </div>
+              </div>
+
               <button type="submit" disabled={loading} className={styles.primaryButton}>
                 {loading ? <Loader2 className={styles.spin} /> : <Sparkles size={20} />}
                 {loading ? "Blooming..." : "Generate Poetic Letter"}
